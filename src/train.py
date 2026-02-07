@@ -185,9 +185,25 @@ def main():
         mlflow.log_metric("recall", recall)
         mlflow.log_metric("f1_score", f1)
 
+
+        # eval_data = X_test.copy()
+        # eval_data["Exited"] = y_test.values
+
+        # model_uri = mlflow.get_artifact_uri("logistic_regression_model")
+
+        # eval_result = mlflow.evaluate(
+        #     model=model_uri,
+        #     data=eval_data,
+        #     targets="Exited",
+        #     model_type="classifier",
+        #     evaluators=["default"],
+        # )
+
         ### Log tag
         mlflow.set_tag("model_type", "LogisticRegression")
 
+        # Manually create and log confusion matrix for visualization
+        y_pred = model.predict(X_test)
         conf_mat = confusion_matrix(y_test, y_pred, labels=model.classes_)
         conf_mat_disp = ConfusionMatrixDisplay(
             confusion_matrix=conf_mat, display_labels=model.classes_
